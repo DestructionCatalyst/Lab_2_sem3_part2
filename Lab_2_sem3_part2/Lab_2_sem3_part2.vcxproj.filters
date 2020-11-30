@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Исходные файлы">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Файлы заголовков">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Файлы ресурсов">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Dictionary">
+      <UniqueIdentifier>{564fd3ac-8611-46ee-b463-ec7b6a8efa30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test">
+      <UniqueIdentifier>{a2aaef9c-d602-4a72-9362-22ebf454dc87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test\UnitTest">
+      <UniqueIdentifier>{6bd94f2d-b584-4323-a267-0fc357f48c5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test\TimedTest">
+      <UniqueIdentifier>{27b86dfb-b5ea-4c7e-aaad-191bfa146f90}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sequence">
+      <UniqueIdentifier>{1555f2d7-0827-4093-a045-88d3b2cd1c62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Timer">
+      <UniqueIdentifier>{ea64b63f-4a49-48e7-aae7-6b4b5fd1e00a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sequence\ArraySequence">
+      <UniqueIdentifier>{def14b05-a352-4ec9-a9cf-6634bbd35ad4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sequence\ListSequence">
+      <UniqueIdentifier>{ccb16ab6-d053-4b2b-87cd-5a13995d9184}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Parse">
+      <UniqueIdentifier>{e6af7513-9a91-48de-8fd8-085ce002a9e7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="IDictionary.h">
+      <Filter>Dictionary</Filter>
+    </ClInclude>
+    <ClInclude Include="HashMap.h">
+      <Filter>Dictionary</Filter>
+    </ClInclude>
+    <ClInclude Include="HashMapIterator.h">
+      <Filter>Dictionary</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\TestCase.h">
+      <Filter>Test\UnitTest</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\UnitTest.h">
+      <Filter>Test\UnitTest</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\TimedTest.h">
+      <Filter>Test\TimedTest</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\TimedTestCase.h">
+      <Filter>Test\TimedTest</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\ITestCase.h">
+      <Filter>Test</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\TestEnvironment.h">
+      <Filter>Test</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\AssertionException.h">
+      <Filter>Test</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\Timer.h">
+      <Filter>Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\ArraySequence.h">
+      <Filter>Sequence\ArraySequence</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\DynamicArray.h">
+      <Filter>Sequence\ArraySequence</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\ArrayIterator.h">
+      <Filter>Sequence\ArraySequence</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\MutableArrayIterator.h">
+      <Filter>Sequence\ArraySequence</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\LinkedList.h">
+      <Filter>Sequence\ListSequence</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\ListIterator.h">
+      <Filter>Sequence\ListSequence</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\ListSequence.h">
+      <Filter>Sequence\ListSequence</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\MutableListIterator.h">
+      <Filter>Sequence\ListSequence</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\Node.h">
+      <Filter>Sequence\ListSequence</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\MutableSequenceIterator.h">
+      <Filter>Sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\Sequence.h">
+      <Filter>Sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\SequenceIterator.h">
+      <Filter>Sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="Person.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="CachedSequence.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="PairInOut.h">
+      <Filter>Parse</Filter>
+    </ClInclude>
+    <ClInclude Include="ParseFunctions.h">
+      <Filter>Parse</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="dependencies\TestCase.cpp">
+      <Filter>Test\UnitTest</Filter>
+    </ClCompile>
+    <ClCompile Include="dependencies\UnitTest.cpp">
+      <Filter>Test\UnitTest</Filter>
+    </ClCompile>
+    <ClCompile Include="dependencies\TimedTest.cpp">
+      <Filter>Test\TimedTest</Filter>
+    </ClCompile>
+    <ClCompile Include="dependencies\TimedTestCase.cpp">
+      <Filter>Test\TimedTest</Filter>
+    </ClCompile>
+    <ClCompile Include="dependencies\TestEnvironment.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="dependencies\AssertionException.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="dependencies\Timer.cpp">
+      <Filter>Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Person.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="ParseFunctions.cpp">
+      <Filter>Parse</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
