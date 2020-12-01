@@ -167,7 +167,22 @@ namespace sequences {
 
 			length--;
 		}
-	private:
+		void Remove(iterator prev)
+		{
+			Node<T>* toRemove = prev.GetNextPointer();
+
+			prev.SetNext(toRemove->Next());
+
+			toRemove->SetNext(nullptr);
+
+			delete(toRemove);
+
+			if (prev.GetNextPointer() == nullptr)
+				tail = (Node<T>*)prev;
+
+			length--;
+		}
+	public:
 		void RemoveFirst()
 		{
 			Node<T>* toRemove = head;
@@ -177,6 +192,21 @@ namespace sequences {
 			toRemove->SetNext(nullptr);
 
 			delete(toRemove);
+		}
+	public:
+		void MoveToStart(iterator prev)
+		{
+			bool fixTail = prev.GetNextPointer()->Next() == nullptr;
+
+			Node<T>* newHead = prev.GetNextPointer();
+
+			prev.SetNext(newHead->Next());
+
+			newHead->SetNext(head);
+			head = newHead;
+
+			if (fixTail)
+				tail = (Node<T>*)prev;
 		}
 		
 	public:
@@ -222,6 +252,7 @@ namespace sequences {
 
 			return itr;
 		}
+
 	public:
 		~LinkedList()
 		{

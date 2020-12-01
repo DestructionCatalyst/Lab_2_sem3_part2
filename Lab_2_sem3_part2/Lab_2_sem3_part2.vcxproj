@@ -159,6 +159,8 @@
     <ClInclude Include="dependencies\TimedTestCase.h" />
     <ClInclude Include="dependencies\Timer.h" />
     <ClInclude Include="dependencies\UnitTest.h" />
+    <ClInclude Include="DoubleLinkedList.h" />
+    <ClInclude Include="DoubleNode.h" />
     <ClInclude Include="HashMap.h" />
     <ClInclude Include="HashMapIterator.h" />
     <ClInclude Include="IDictionary.h" />
