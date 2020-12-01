@@ -90,7 +90,7 @@ namespace dictionary
 
 			itemsCount--;
 
-			Shrink();
+			//Shrink();
 		}
 		virtual V Get(K key) const override
 		{

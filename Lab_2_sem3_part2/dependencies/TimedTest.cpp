@@ -1,7 +1,7 @@
 #include "TimedTest.h"
 
 #include <iostream>
-#define ECHO_FOR_GRAPH
+//#define ECHO_FOR_GRAPH
 
 TimedTest::TimedTest(int id, string name, timed_function testFunction) :
 	UnitTest(id, name, new TimedTestCase(testFunction))

@@ -6,9 +6,18 @@
 #include "DoubleLinkedList.h"
 
 #include "dependencies/TestEnvironment.h"
+#include "dependencies/TimedTest.h"
 
 #define FIRST_NAMES_COUNT 5162
 #define LAST_NAMES_COUNT 8879
+
+#define TEST_SAMPLE_SIZE 30000
+#define TEST_CACHE_SIZE 50
+
+#define TEST_FREQUENT_COUNT 5
+#define TEST_FREQUENT_PERCENT 80
+
+#define TEST_QUERIES_COUNT 5000
 
 void thinOutTheLastNames()
 {
@@ -68,12 +77,12 @@ Person* generatePerson(long long number = -1)
 	return new Person(firstname, lastname, age, id);
 }
 
-void ShowName(Person* p)
+void showName(Person* p)
 {
 	std::cout << p->GetFirstName() << " " << p->GetLastName() << std::endl;
 }
 
-void TestDoubleList()
+void testDoubleList()
 {
 	DoubleLinkedList<int>* list = new DoubleLinkedList<int>();
 
@@ -119,11 +128,150 @@ void TestDoubleList()
 	}
 }
 
+void testCache(Timer& t)
+{
+	CachedSequence<int, Person*>* seq = new CachedSequence<int, Person*>(
+		[](int id, int tableSize)->int
+		{
+			return id % tableSize;
+		},
+		TEST_CACHE_SIZE);
+
+	Person* p;
+
+	std::cout << "Generating data..." << std::endl;
+
+	std::ifstream inFirst("firstnames.txt", /*std::ios::binary|*/std::ios::in);
+	std::ifstream inLast("us.txt", /*std::ios::binary|*/std::ios::in);
+
+	string firstname;
+	string lastname;
+
+	for (int i = 0; i < TEST_SAMPLE_SIZE; i++)
+	{
+		inFirst >> firstname;
+		inLast >> lastname;
+
+		seq->Add(i, new Person(firstname, lastname, rand() % 100, i));
+	}
+
+	inFirst.close();
+	inLast.close();
+
+	ArraySequence<int>* FAQ = new ArraySequence<int>();
+
+	for (int i = 0; i < TEST_FREQUENT_COUNT; i++)
+	{
+		FAQ->Append(rand() % TEST_SAMPLE_SIZE);
+	}
+
+	std::cout << "Data generated!" << std::endl;
+
+	Person* gotten;
+
+	t.Start();
+
+	for (int i = 0; i < TEST_QUERIES_COUNT; i++)
+	{
+		if (rand() % 100 < TEST_FREQUENT_PERCENT)
+		{
+			//From FAQ
+			gotten = seq->Get(FAQ->Get(rand() % TEST_FREQUENT_COUNT));
+		}
+		else
+		{
+			//Random
+			gotten = seq->Get(rand() % TEST_SAMPLE_SIZE);
+		}
+		std::cout << gotten->GetLastName() << ' ';
+	}
+
+	t.Pause();
+	
+	std::cout << std::endl;
+}
+
+Person* findInSequence(int id, ArraySequence<Person*>* seq)
+{
+	Person* tmp;
+
+	for(int i = 0; i < seq->GetLength(); i++)
+	{ 
+		tmp = seq->Get(i);
+		if (tmp->GetID() == id)
+			return tmp;
+	}
+
+	return nullptr;
+}
+
+void testLinearSearch(Timer& t)
+{
+	ArraySequence<Person*>* seq = new ArraySequence<Person*>();
+
+	Person* p;
+
+	std::cout << "Generating data..." << std::endl;
+
+	std::ifstream inFirst("firstnames.txt", /*std::ios::binary|*/std::ios::in);
+	std::ifstream inLast("us.txt", /*std::ios::binary|*/std::ios::in);
+
+	string firstname;
+	string lastname;
+
+	for (int i = 0; i < TEST_SAMPLE_SIZE; i++)
+	{
+		inFirst >> firstname;
+		inLast >> lastname;
+
+		seq->Append(new Person(firstname, lastname, rand() % 100, i));
+	}
+
+	inFirst.close();
+	inLast.close();
+
+	ArraySequence<int>* FAQ = new ArraySequence<int>();
+
+	for (int i = 0; i < TEST_FREQUENT_COUNT; i++)
+	{
+		FAQ->Append(rand() % TEST_SAMPLE_SIZE);
+	}
+
+	std::cout << "Data generated!" << std::endl;
+
+	Person* gotten;
+
+	t.Start();
+
+	for (int i = 0; i < TEST_QUERIES_COUNT; i++)
+	{
+		if (rand() % 100 < TEST_FREQUENT_PERCENT)
+		{
+			//From FAQ
+			gotten = findInSequence(FAQ->Get(rand() % TEST_FREQUENT_COUNT), seq);
+		}
+		else
+		{
+			//Random
+			gotten = findInSequence(rand() % TEST_SAMPLE_SIZE, seq);
+		}
+
+		std::cout << gotten->GetLastName() << ' ';
+	}
+
+	std::cout << std::endl;
+	t.Pause();
+}
+
 int main()
 {
 	srand(clock());
 
-	UnitTest("Double linked list test", TestDoubleList).Run();
+	UnitTest("Double linked list test", testDoubleList).Run();
+	TimedTest("Cache test", testCache).Run();
+	TimedTest("Linear search for comparsion", testLinearSearch).Run();
+
+	/*
 
 	CachedSequence<int, Person*>* seq = new CachedSequence<int, Person*>(
 		[](int id, int tableSize)->int
@@ -139,30 +287,30 @@ int main()
 
 		seq->Add(p->GetID(), p);
 
-		ShowName(p);
+		showName(p);
 	}
 
 	std::cout << std::endl;
 
-	ShowName(seq->Get(5));
-	ShowName(seq->Get(1));
-	ShowName(seq->Get(7));
-	ShowName(seq->Get(0));
-	ShowName(seq->Get(5));
+	showName(seq->Get(5));
+	showName(seq->Get(1));
+	showName(seq->Get(7));
+	showName(seq->Get(0));
+	showName(seq->Get(5));
 	//ShowName(seq->Get(0));
-	ShowName(seq->Get(3));
-	ShowName(seq->Get(2));
-	ShowName(seq->Get(5));
-	ShowName(seq->Get(0));
-	ShowName(seq->Get(5));
-	ShowName(seq->Get(5));
-	ShowName(seq->Get(4));
-	ShowName(seq->Get(5));
-	ShowName(seq->Get(8));
-	ShowName(seq->Get(6));
-	ShowName(seq->Get(5));
+	showName(seq->Get(3));
+	showName(seq->Get(2));
+	showName(seq->Get(5));
+	showName(seq->Get(0));
+	showName(seq->Get(5));
+	showName(seq->Get(5));
+	showName(seq->Get(4));
+	showName(seq->Get(5));
+	showName(seq->Get(8));
+	showName(seq->Get(6));
+	showName(seq->Get(5));
 
-
+	*/
 
 	return 0;
 }

@@ -9,6 +9,7 @@
 
 #include "IDictionary.h"
 #include "HashMap.h"
+#include "DoubleLinkedList.h"
 
 using namespace sequences;
 using namespace dictionary;
@@ -18,23 +19,25 @@ class CachedSequence
 {
 public:
 	typedef std::pair<K, V> KeyValuePair;
-	typedef sequences::iterators::MutableListIterator<std::pair<K, V>> PrevCacheItemIter;
+	typedef DoubleNode<KeyValuePair> CachePointer;
 private:
 	Sequence<KeyValuePair>* data;
-	IDictionary<K, PrevCacheItemIter*>* cacheTable;
-	LinkedList<KeyValuePair>* cacheList = new LinkedList<KeyValuePair>();
+	IDictionary<K, CachePointer*>* cacheTable;
+	DoubleLinkedList<KeyValuePair>* cacheList = new DoubleLinkedList<KeyValuePair>();
 
 	int cacheSize;
 public:
 	CachedSequence(std::function<int(K, int)> hashFunc, int cacheSize) :
 		data(new ArraySequence<KeyValuePair>()),
-		cacheTable(new HashMap<K, PrevCacheItemIter*>(hashFunc, cacheSize)),
+		cacheTable(new HashMap<K, CachePointer*>(hashFunc, cacheSize)),
 		cacheSize(cacheSize)
 	{}
 
 	void Add(K key, V value)
 	{
-		data->Append(std::make_pair(key, value));
+		KeyValuePair pair = std::make_pair(key, value);
+		data->Append(pair);
+		PutInCache(pair);
 	}
 	V Get(K key)
 	{
@@ -51,20 +54,15 @@ public:
 			PutInCache(fromArray);
 		}
 
-		std::cout << ((Node<KeyValuePair>*)cacheList->begin())->GetContent().first
-			<< *dynamic_cast<HashMap<K, PrevCacheItemIter*>*>(cacheTable) << std::endl;
+		//std::cout << ((Node<KeyValuePair>*)cacheList->begin())->GetContent().first
+			//<< *dynamic_cast<HashMap<K, PrevCacheItemIter*>*>(cacheTable) << std::endl;
 
 		return res;
 	}
 private:
 	KeyValuePair GetFromCache(K key)
 	{
-		if ((!cacheList->IsEmpty()) && (cacheList->GetFirst().first == key))
-			return cacheList->GetFirst();
-
-		PrevCacheItemIter* prev = new PrevCacheItemIter(*cacheTable->Get(key));
-		
-		return *(++(*prev));
+		return cacheTable->Get(key)->GetContent();
 	}
 	KeyValuePair FindInArray(K key)
 	{
@@ -81,31 +79,32 @@ private:
 	}
 	void PutInCache(KeyValuePair pair)
 	{
-		if (cacheList->GetLength() == cacheSize)
+		if (cacheList->GetLength() >= cacheSize)
 		{
 			//Remove last item from cache
+			CachePointer* last = cacheList->Tail();
 
-			K lastKey = cacheList->GetLast().first;
-
-			PrevCacheItemIter* prevToLastItem = cacheTable->Get(lastKey);
-
-			cacheList->Remove(*prevToLastItem);
-			cacheTable->Remove(lastKey);
-
+			cacheTable->Remove(last->GetContent().first);
+			cacheList->Remove(last);
 		}
-			
+
 
 		//Add to the start
-		if (!cacheList->IsEmpty()) {
-			K secondItemKey = cacheList->GetFirst().first;
-
-			cacheList->Prepend(pair);
-
-			AddSecondItemToTable(secondItemKey);
-		}
-		else
-			cacheList->Prepend(pair);
+		cacheList->Prepend(pair);
+		cacheTable->Add(pair.first, cacheList->Head());
 	}
+	void RefreshCache(K key)
+	{
+		CachePointer* toStart = cacheTable->Get(key);
+
+		cacheList->MoveToStart(toStart);
+	}
+
+};
+/*
+template<class K, class V>
+class CachedSequence
+{
 	void RefreshCache(K key)
 	{
 		try
@@ -143,3 +142,4 @@ private:
 		cacheTable->Add(secondItemKey, item);
 	}
 };
+*/

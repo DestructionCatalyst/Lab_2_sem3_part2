@@ -43,10 +43,14 @@ public:
 	}
 	void Prepend(T item)
 	{
-		head = new DoubleNode<T>(item, nullptr, head);
+		DoubleNode<T>* newNode = new DoubleNode<T>(item, nullptr, head);
 
 		if (length == 0)
-			tail = head;
+			tail = newNode;
+		else
+			head->SetPrev(newNode);
+
+		head = newNode;
 
 		++length;
 	}
@@ -79,8 +83,10 @@ public:
 		if (toRemove == tail)
 			tail = prev;
 
-		prev->SetNext(next);
-		next->SetPrev(prev);
+		if(prev != nullptr)
+			prev->SetNext(next);
+		if (next != nullptr)
+			next->SetPrev(prev);
 
 		toRemove->SetNext(nullptr);
 		delete(toRemove);
@@ -95,10 +101,13 @@ public:
 			if (toMove == tail)
 				tail = prev;
 
-			prev->SetNext(next);
-			next->SetPrev(prev);
+			if (prev != nullptr)
+				prev->SetNext(next);
+			if (next != nullptr)
+				next->SetPrev(prev);
 
 			toMove->SetNext(head);
+			toMove->SetPrev(nullptr);
 			head->SetPrev(toMove);
 
 			head = toMove;
